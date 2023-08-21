@@ -1,0 +1,13 @@
+mongoReplicaCount: 1
+mongoStorageClass: "ebs-sc"
+mongoStorageCapacity: 10Gi
+
+appReplicaCount: 1
+operatorReplicaCount: 1
+
+image:
+  registry: nitishpradhan
+  repository: operator
+  pullPolicy: Always
+  operatorTag: appdbopr
+  appTag: fastapp

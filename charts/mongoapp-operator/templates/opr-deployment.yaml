@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: operator
+  namespace: {{ .Release.Namespace | quote }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.operatorReplicaCount }}
   selector:
     matchLabels:
       app: operator
@@ -15,5 +16,5 @@ spec:
       serviceAccountName: operator-sa
       containers:
         - name: operator
-          image: nitishpradhan/operator:appdbopr
-          imagePullPolicy: Always
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.operatorTag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}

@@ -3,9 +3,10 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongo
+  namespace: {{ .Release.Namespace | quote }}
 spec:
   serviceName: "mongo"
-  replicas: 1
+  replicas: {{ .Values.mongoReplicaCount }}
   selector:
     matchLabels:
       role: mongo
@@ -37,9 +38,9 @@ spec:
   - metadata:
       name: mongo-persistent-storage
       annotations:
-        volume.beta.kubernetes.io/storage-class: "ebs-sc"
+        volume.beta.kubernetes.io/storage-class: {{ .Values.mongoStorageClass | quote }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 10Gi
+          storage: {{ .Values.mongoStorageCapacity }}
