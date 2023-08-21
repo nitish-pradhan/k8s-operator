@@ -1,0 +1,7 @@
+apiVersion: mongodb.example.com/v1
+kind: MongoDB
+metadata:
+  name: example-mongodb
+spec:
+  StatefulSet: mongo
+  Deployment: app
