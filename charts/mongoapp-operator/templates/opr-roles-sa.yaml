@@ -11,6 +11,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: operator-sa
+  namespace: {{ .Release.Namespace | quote }}
 roleRef:
   kind: ClusterRole
   name: cluster-admin
