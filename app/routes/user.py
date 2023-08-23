@@ -1,26 +1,21 @@
 from fastapi import APIRouter, Depends
 
-from models.user import User
-from config.db import collection
-from schemas.user import serializeDict, serializeList
+from app.models.user import User
+from app.config.db import collection
+from app.schemas.user import serializeDict, serializeList
 from bson import ObjectId
 
 from fastapi import status, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import RedirectResponse
-from auth.schemas import UserAuth, TokenSchema
-from auth.utils import (
+from app.auth.schemas import UserAuth, TokenSchema
+from app.auth.utils import (
     get_hashed_password,
     create_access_token,
     create_refresh_token,
     verify_password
 )
-from auth.deps import get_current_user
-import logging
-
-logging.getLogger().setLevel(logging.INFO)
-logging.basicConfig(level=logging.INFO,
-                        format='%(levelname)s: %(asctime)s: %(message)s')
+from app.auth.deps import get_current_user
 
 user = APIRouter()
 
@@ -31,9 +26,10 @@ async def get_me(user: User = Depends(get_current_user)):
 
 
 @user.get("/users/", response_model=list[User], dependencies=[Depends(get_current_user)])
-async def find_all_users(skip: int = 0, limit: int = 10):
-    users = collection.find().skip(skip).limit(limit)
+async def find_all_users(page: int = 0, limit: int = 10):
+    users = collection.find().skip((page-1) * limit).limit(limit)
     return serializeList(users)
+
 
 @user.get("/users/{id}", response_model=User, dependencies=[Depends(get_current_user)])
 async def find_one_user(name: str):

@@ -9,12 +9,8 @@ from .utils import (
 from jose import jwt
 from pydantic import ValidationError
 from .schemas import TokenPayload
-from schemas.user import serializeDict, serializeList
-from config.db import collection
-import  logging
-logging.getLogger().setLevel(logging.INFO)
-logging.basicConfig(level=logging.INFO,
-                        format='%(levelname)s: %(asctime)s: %(message)s')
+from app.schemas.user import serializeDict, serializeList
+from app.config.db import collection
 
 reuseable_oauth = OAuth2PasswordBearer(
     tokenUrl="/login",
